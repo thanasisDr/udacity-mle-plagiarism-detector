@@ -46,12 +46,12 @@ if __name__ == '__main__':
 
     parser.add_argument('--epochs', type=int, default=10, metavar='N',
                         help='number of epochs to train (default: 10)')
-    parser.add_argument('--seed', type=int, default=1, metavar='S',
-                        help='random seed (default: 1)')
+#     parser.add_argument('--seed', type=int, default=1, metavar='S',
+#                         help='random seed (default: 1)')
     
     # Model Parameters
-    parser.add_argument('--max_leaf_nodes', type=int, default=32, metavar='N',
-                        help='size of max leaf nodes (default: 50)')
+    parser.add_argument('--max_leaf_nodes', type=int, default=100, metavar='N',
+                        help='size of max leaf nodes (default: 100)')
 
     # args holds all passed-in arguments
     args = parser.parse_args()
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
 
     ## TODO: Define a model
-    model = tree.DecisionTreeClassifier(max_leaf_nodes=max_leaf_nodes)
+    model = tree.DecisionTreeClassifier(max_leaf_nodes = max_leaf_nodes)
     
     
     ## TODO: Train the model
