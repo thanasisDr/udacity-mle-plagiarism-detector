@@ -8,7 +8,7 @@ import pandas as pd
 # from sklearn.externals import joblib
 # Import joblib package directly
 import joblib
-from sklearn import tree
+from sklearn.ensemble import RandomForestClassifier
 ## TODO: Import any additional libraries you need to define a model
 
 
@@ -50,8 +50,8 @@ if __name__ == '__main__':
 #                         help='random seed (default: 1)')
     
     # Model Parameters
-    parser.add_argument('--max_leaf_nodes', type=int, default=100, metavar='N',
-                        help='size of max leaf nodes (default: 100)')
+    parser.add_argument('--n_estimators', type=int, default=100, metavar='N',
+                        help='size of estimators (default: 100)')
 
     # args holds all passed-in arguments
     args = parser.parse_args()
@@ -65,13 +65,13 @@ if __name__ == '__main__':
     train_x = train_data.iloc[:,1:]
     
     
-    max_leaf_nodes = args.max_leaf_nodes
-    if max_leaf_nodes is not None:
-        max_leaf_nodes = int(max_leaf_nodes)
+    n_estimators = args.n_estimators
+    if n_estimators is not None:
+        n_estimators = int(n_estimators)
 
 
     ## TODO: Define a model
-    model = tree.DecisionTreeClassifier(max_leaf_nodes = max_leaf_nodes)
+    model = RandomForestClassifier(n_estimators = n_estimators)
     
     
     ## TODO: Train the model

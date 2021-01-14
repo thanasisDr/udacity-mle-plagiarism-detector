@@ -74,6 +74,7 @@ def predict_fn(input_data, model):
     # Compute the result of applying the model to the input data
     # The variable `out_label` should be a rounded value, either 1 or 0
     out = model(data)
+    print(out)
     out_np = out.cpu().detach().numpy()
     out_label = out_np.round()
 

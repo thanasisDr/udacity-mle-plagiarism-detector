@@ -27,9 +27,12 @@ class BinaryClassifier(nn.Module):
         super(BinaryClassifier, self).__init__()
 
         # define any initial layers, here
+        self.hidden = nn.Linear(input_features, hidden_dim)
+        self.act1 = nn.ReLU()
+        self.output = nn.Linear(hidden_dim, output_dim)
+        self.act2 = nn.Sigmoid()
         
-
-    
+        
     ## TODO: Define the feedforward behavior of the network
     def forward(self, x):
         """
@@ -39,6 +42,16 @@ class BinaryClassifier(nn.Module):
         """
         
         # define the feedforward behavior
-        
+        print(x)
+        x = self.hidden(x)
+        print(x)
+        x = self.act1(x)
+        print(x)
+        x = self.output(x)
+        print('output')
+        print(x)
+        x = self.act2(x)
+        print('final')
+        print(x)
         return x
     

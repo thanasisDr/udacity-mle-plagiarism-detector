@@ -104,11 +104,11 @@ if __name__ == '__main__':
     # Do not need to change
     parser.add_argument('--output-data-dir', type=str, default=os.environ['SM_OUTPUT_DATA_DIR'])
     parser.add_argument('--model-dir', type=str, default=os.environ['SM_MODEL_DIR'])
-    parser.add_argument('--data-dir', type=str, default=os.environ['SM_CHANNEL_TRAIN'])
+    parser.add_argument('--data-dir', type=str, default=os.environ['SM_CHANNEL_TRAINING'])
     
     # Training Parameters, given
-    parser.add_argument('--batch-size', type=int, default=10, metavar='N',
-                        help='input batch size for training (default: 10)')
+    parser.add_argument('--batch-size', type=int, default=5, metavar='N',
+                        help='input batch size for training (default: 5)')
     parser.add_argument('--epochs', type=int, default=10, metavar='N',
                         help='number of epochs to train (default: 10)')
     parser.add_argument('--seed', type=int, default=1, metavar='S',
@@ -117,6 +117,12 @@ if __name__ == '__main__':
     ## TODO: Add args for the three model parameters: input_features, hidden_dim, output_dim
     # Model Parameters
     
+    parser.add_argument('--input_features', type=int, default=3, metavar='N',
+                        help='size of inpput features (default: 3)')
+    parser.add_argument('--hidden_dim', type=int, default=20, metavar='N',
+                        help='size of the hidden dimension (default: 20)')
+    parser.add_argument('--output_dim', type=int, default=1, metavar='N',
+                        help='size of output (default: 1)')
     
     # args holds all passed-in arguments
     args = parser.parse_args()
@@ -135,14 +141,18 @@ if __name__ == '__main__':
     ## TODO:  Build the model by passing in the input params
     # To get params from the parser, call args.argument_name, ex. args.epochs or ards.hidden_dim
     # Don't forget to move your model .to(device) to move to GPU , if appropriate
-    model = None
+    model = BinaryClassifier(args.input_features, args.hidden_dim, args.output_dim).to(device)
+    
+    print("Model loaded with input_features {}, hidden_dim {}, output_dim {}.".format(
+        args.input_features, args.hidden_dim, args.output_dim
+    ))
 
     ## TODO: Define an optimizer and loss function for training
-    optimizer = None
-    criterion = None
+    optimizer = optim.Adam(model.parameters())
+    loss_fn = torch.nn.BCELoss()
 
     # Trains the model (given line of code, which calls the above training function)
-    train(model, train_loader, args.epochs, criterion, optimizer, device)
+    train(model, train_loader, args.epochs, loss_fn, optimizer, device)
 
     ## TODO: complete in the model_info by adding three argument names, the first is given
     # Keep the keys of this dictionary as they are 
@@ -150,8 +160,8 @@ if __name__ == '__main__':
     with open(model_info_path, 'wb') as f:
         model_info = {
             'input_features': args.input_features,
-            'hidden_dim': <add_arg>,
-            'output_dim': <add_arg>,
+            'hidden_dim': args.hidden_dim,
+            'output_dim': args.output_dim,
         }
         torch.save(model_info, f)
         
